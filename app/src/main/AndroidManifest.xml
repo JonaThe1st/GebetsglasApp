@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.jona.gebetsglas">
+
+    <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <receiver android:name=".receiver.NotificationSender">
+        </receiver>
+
+        <receiver android:name=".receiver.BootReceiver">
+            <intent-filter>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.HOME"/>
+
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".category.CategoryActivity">
+        </activity>
+        <activity android:name=".main.DelCategoryActivity">
+        </activity>
+        
+        <activity android:name=".category.DelIsActivity"/>
+        <activity android:name=".main.NotificationActivity"/>
+        <activity android:name=".external.ExternalActivity"/>
+        <activity android:name=".external.avc.AvcActivity"/>
+        <!--<activity android:name=".unused.NewCaActivity"></activity>
+        <activity android:name=".unused.NewIsActivity"></activity>-->
+    </application>
+
+</manifest>

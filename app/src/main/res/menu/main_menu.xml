@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/main_menu">
+    <item android:id="@+id/add_category"
+        android:title="@string/new_category" />
+    <item android:id="@+id/del_category"
+        android:title="@string/del_category"/>
+    <item android:id="@+id/notification_menu"
+        android:title="@string/notification_menu"/>
+    <item android:id="@+id/external_menu"
+        android:title="@string/heading_external" />
+
+</menu>

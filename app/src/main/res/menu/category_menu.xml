@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/category_search"
+        android:icon="@android:drawable/ic_search_category_default"
+        android:title="Titel"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+
+    <item android:id="@+id/add_issue"
+        android:title="@string/new_issue"/>
+
+    <item android:id="@+id/del_is"
+        android:title="@string/del_is"/>
+
+</menu>

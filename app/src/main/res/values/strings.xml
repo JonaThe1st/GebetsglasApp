@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Gebetsglas</string>
+    <string name="heading_categories">Dein Kategorien</string>
+    <string name="new_category">Neue Kategorie</string>
+    <string name="save">Speichern</string>
+    <string name="new_issue">Neues Gebetsanliegen</string>
+    <string name="random">Zufälliges anliegen</string>
+    <string name="name">Name</string>
+    <string name="description">Beschreibung(optional)</string>
+    <string name="issue">Gebetsanliegen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="del_category">Kategorien bearbeiten</string>
+    <string name="heading_del_ca">Wähle die zu löschenden Kategorie/n aus</string>
+    <string name="del_ca_Submit">Ausgewählte Kategorien löschen</string>
+    <string name="del_alert">Bist du dir sicher?\n(Die Ausgewählten Elemente werden gelöscht)</string>
+    <string name="delete">Löschen</string>
+    <string name="heading_del_is">Wähle die zu löschenden Gebetsanliegen aus</string>
+    <string name="del_is_submit">Ausgewählte Gebetsanliegen löschen</string>
+    <string name="del_is">Gebetsanliegen bearbeiten</string>
+    <string name="main_demo">Du hast noch keine Kategorie hinzugefügt!\nKlicke dazu einfach auf das Menu und dann auf "Neue Kategorie"</string>
+    <string name="category_demo">Du hast noch keine Gebetsanliegen hinzugefügt!\nKlicke dazu einfach auf das Menu und dann auf "Neues Gebetsanliegen"</string>
+    <string name="notification_menu">Benachrichtigungen verwalten</string>
+    <string name="heading_notification">Tägliche Benachrichtigungen</string>
+    <string name="notification_switch">Benachrichtigunen Ein/Aus</string>
+    <string name="notification_time">Uhrzeit: %1$d:%2$d Uhr</string>
+    <string name="notification_categories">Kategorien auswählen%1$s</string>
+    <string name="channel_name">gebetsglas_channel</string>
+    <string name="channel_description">ka</string>
+
+    <string name="modify_ca_heading">Kategorie bearbeiten</string>
+
+    <string name="preference_file_key">de.jona.gebetsglas.PREFERENCE_FILE_KEY</string>
+    <string name="preference_notification_enabled">notification_enabled</string>
+    <string name="preference_notification_categories">notification_categories</string>
+    <string name="preference_notification_hour">notification_hour</string>
+    <string name="preference_notification_min">notification_min</string>
+    <string name="preferene_category_random">category_random: %1$s</string>
+
+    <string name="heading_external">Externe Gebetsanliegen</string>
+    <string name="external_description">Hier siehst du Gebetsanliegen von verschiedenen Organisationen</string>
+
+    <string name="avc_heading">AVC</string>
+    <string name="avc_description">AVC steht  für »Aktion für verfolgte Christen und Notleidende«. Anstoß zur Gründung gab die Situation der verfolgten Christen im Ostblock.</string>
+
+
+</resources>
