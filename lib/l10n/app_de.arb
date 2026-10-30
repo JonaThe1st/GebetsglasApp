@@ -146,5 +146,6 @@
   "diagScheduledNone": "Keine Erinnerung geplant",
   "diagRefresh": "Aktualisieren",
   "diagYes": "ja",
-  "diagNo": "nein"
+  "diagNo": "nein",
+  "diagScheduledActive": "Erinnerung ist geplant"
 }

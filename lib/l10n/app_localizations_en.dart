@@ -325,4 +325,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagNo => 'no';
+
+  @override
+  String get diagScheduledActive => 'Reminder is scheduled';
 }

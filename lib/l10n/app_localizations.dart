@@ -685,6 +685,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'no'**
   String get diagNo;
+
+  /// No description provided for @diagScheduledActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder is scheduled'**
+  String get diagScheduledActive;
 }
 
 class _AppLocalizationsDelegate

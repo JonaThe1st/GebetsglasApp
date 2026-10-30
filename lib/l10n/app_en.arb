@@ -146,5 +146,6 @@
   "diagScheduledNone": "No reminder scheduled",
   "diagRefresh": "Refresh",
   "diagYes": "yes",
-  "diagNo": "no"
+  "diagNo": "no",
+  "diagScheduledActive": "Reminder is scheduled"
 }

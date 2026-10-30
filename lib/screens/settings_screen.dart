@@ -76,12 +76,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       notif = await NotificationService.instance.requestPermission();
     }
     if (!mounted) return;
-    final next = pending.where((p) => p.id == 1001).toList();
+    final planned = pending.any((p) => p.id == 1001);
     final l10n = AppLocalizations.of(context)!;
-    final text = next.isEmpty
-        ? l10n.diagScheduledNone
-        : DateFormat('EEEE, dd.MM., HH:mm').format(
-            (next.first.scheduledDateTime)?.toLocal() ?? DateTime.now());
+    final text = planned && _nextFire != null
+        ? DateFormat('EEEE, dd.MM., HH:mm').format(_nextFire!)
+        : planned
+            ? l10n.diagScheduledActive
+            : l10n.diagScheduledNone;
     setState(() {
       _exactOk = exact;
       _pendingText = text;

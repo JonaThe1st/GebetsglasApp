@@ -326,4 +326,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get diagNo => 'nein';
+
+  @override
+  String get diagScheduledActive => 'Erinnerung ist geplant';
 }
