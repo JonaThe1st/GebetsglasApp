@@ -131,11 +131,17 @@ Future<bool> confirmDelete(
 }
 
 void showSnack(BuildContext context, String message) {
+  final scheme = Theme.of(context).colorScheme;
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: TextStyle(color: scheme.onSurface),
+      ),
       behavior: SnackBarBehavior.floating,
+      backgroundColor: scheme.surfaceContainerHigh,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       duration: const Duration(seconds: 2),
     ));
 }
