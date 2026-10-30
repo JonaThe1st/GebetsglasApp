@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../db/database.dart';
 import '../models/category.dart';
 import '../models/prayer_request.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/common.dart';
 
 /// Das „Glas ziehen"-Erlebnis: zufälliges Anliegen mit Animation.
@@ -64,7 +65,7 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
       _drawResult = request;
     });
     if (request == null) {
-      showSnack(context, 'Keine Anliegen vorhanden – leg zuerst welche an 🙏');
+      showSnack(context, AppLocalizations.of(context)!.drawEmpty);
     }
   }
 
@@ -73,13 +74,14 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
     await AppDatabase.instance.recordPrayer(_drawResult!);
     if (!mounted) return;
     setState(() => _recorded = true);
-    showSnack(context, 'Im Tagebuch festgehalten 🙏');
+    showSnack(context, AppLocalizations.of(context)!.drawRecorded);
   }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
     final scope = _selectedCategoryId == null
         ? null
         : _categories
@@ -88,7 +90,7 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
             ?.name;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Glas ziehen'), centerTitle: true),
+      appBar: AppBar(title: Text(l10n.drawTitle), centerTitle: true),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
@@ -98,7 +100,7 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
             runSpacing: 8,
             children: [
               ChoiceChip(
-                label: const Text('Alle'),
+                label: Text(l10n.allChips),
                 selected: _selectedCategoryId == null,
                 onSelected: (_) => setState(() => _selectedCategoryId = null),
               ),
@@ -140,9 +142,9 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: scheme.primary.withValues(alpha: 0.3),
-                          blurRadius: 30,
-                          offset: const Offset(0, 12),
+                          color: Colors.black.withValues(alpha: 0.18),
+                          blurRadius: 16,
+                          offset: const Offset(0, 6),
                         ),
                       ],
                     ),
@@ -159,7 +161,7 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 16),
           Text(
-            scope == null ? 'Gebetsglas – aus allen Kategorien' : 'Glas: $scope',
+            scope == null ? l10n.drawScopeAll : l10n.drawScopeOne(scope),
             textAlign: TextAlign.center,
             style: textTheme.bodyMedium
                 ?.copyWith(color: scheme.onSurfaceVariant),
@@ -185,7 +187,7 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
                         Icon(Icons.favorite, color: scheme.error, size: 20),
                         const SizedBox(width: 6),
                         Text(
-                          'Dein Anliegen für jetzt',
+                          l10n.drawCardTitle,
                           style: textTheme.labelLarge?.copyWith(
                             color: scheme.onSurfaceVariant,
                           ),
@@ -210,7 +212,8 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
                           child: OutlinedButton.icon(
                             onPressed: _draw,
                             icon: const Icon(Icons.refresh),
-                            label: Text(_recorded ? 'Neu ziehen' : 'Nochmal ziehen'),
+                            label: Text(
+                                _recorded ? l10n.drawAgainNew : l10n.drawAgain),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -221,8 +224,8 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
                               _recorded ? Icons.check : Icons.favorite,
                             ),
                             label: Text(_recorded
-                                ? 'Gebetet ✓'
-                                : 'Gebetet – ins Tagebuch'),
+                                ? l10n.prayedShort
+                                : l10n.prayedFull),
                           ),
                         ),
                       ],

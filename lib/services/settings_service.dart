@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui' show Locale;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +13,23 @@ class SettingsService {
   static const _kMinute = 'notification_minute';
   static const _kCategoryIds = 'notification_category_ids';
   static const _kNextFire = 'notification_next_fire';
+  static const _kLanguage = 'language';
+
+  Future<String> get language async =>
+      (await SharedPreferences.getInstance()).getString(_kLanguage) ??
+      'system';
+
+  Future<void> setLanguage(String value) async {
+    (await SharedPreferences.getInstance()).setString(_kLanguage, value);
+  }
+
+  /// App-Sprache als Locale; null = Systemeinstellung folgen.
+  Future<Locale?> get languageLocale async {
+    final code = await language;
+    if (code == 'en') return const Locale('en');
+    if (code == 'de') return const Locale('de');
+    return null;
+  }
 
   Future<int?> get nextFire async {
     final raw =

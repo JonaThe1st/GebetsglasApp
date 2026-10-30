@@ -1,0 +1,123 @@
+{
+  "@@locale": "en",
+  "appTitle": "Gebetsglas",
+  "tabOverview": "Overview",
+  "tabCategories": "Categories",
+  "tabGlass": "Glass",
+  "tabJournal": "Journal",
+  "tabSettings": "Settings",
+  "homeGreeting": "Your prayer jar",
+  "homeGreetingSub": "What is on your heart today?",
+  "ctaDraw": "Draw today",
+  "ctaDrawSub": "Draw one prayer request from the jar",
+  "statRequests": "Requests",
+  "statPrayers": "Prayers",
+  "statStreakDays": "Streak (days)",
+  "recentTitle": "Recently prayed",
+  "recentEmpty": "Nothing prayed yet ✨",
+  "recentEmptySub": "Draw a request and keep it in your journal.",
+  "journalTitle": "Prayer journal",
+  "journalEmpty": "No journal yet",
+  "journalEmptySub": "When you pray for a request, it is recorded here with a date.",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "drawTitle": "Draw from the jar",
+  "allChips": "All",
+  "drawScopeAll": "Prayer jar – all categories",
+  "drawScopeOne": "Jar: {scope}",
+  "@drawScopeOne": {
+    "placeholders": {
+      "scope": {"type": "String"}
+    }
+  },
+  "drawBtn": "Draw",
+  "drawAgain": "Draw again",
+  "drawAgainNew": "Draw new",
+  "drawCardTitle": "Your request for now",
+  "prayedShort": "Prayed ✓",
+  "prayedFull": "Prayed – save to journal",
+  "drawEmpty": "No requests yet – add some first 🙏",
+  "drawRecorded": "Saved to journal 🙏",
+  "categoriesTitle": "Categories",
+  "addCategory": "Category",
+  "categoriesEmpty": "No categories yet",
+  "categoriesEmptySub": "Create categories, e.g. family, friends or thanksgiving.",
+  "edit": "Edit",
+  "delete": "Delete",
+  "deleteCategoryTitle": "Delete category",
+  "deleteCategoryMsg": "\u201C{name}\u201D and all its requests will be deleted.",
+  "@deleteCategoryMsg": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "categoryCreated": "{name} created",
+  "@categoryCreated": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "categoryDeleted": "Category deleted",
+  "addRequest": "Request",
+  "requestsEmpty": "No requests yet",
+  "requestsEmptySub": "Tap add below to enter your first prayer request.",
+  "requestCreated": "Request created",
+  "requestDeleted": "Request deleted",
+  "prayedRecorded": "Prayed – saved to journal 🙏",
+  "prayedCount": "{count}x prayed",
+  "@prayedCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "prayedBtn": "Prayed",
+  "neverPrayed": "Never prayed",
+  "lastPrayedAt": "Last prayed: {date}",
+  "@lastPrayedAt": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "deleteRequestTitle": "Delete request",
+  "deleteRequestMsg": "\u201C{name}\u201D will be deleted.",
+  "@deleteRequestMsg": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "newCategory": "New category",
+  "editCategory": "Edit category",
+  "labelName": "Name",
+  "nameRequired": "Please enter a name",
+  "labelDescription": "Description (optional)",
+  "save": "Save",
+  "newRequest": "New prayer request",
+  "editRequest": "Edit request",
+  "labelRequest": "Prayer request",
+  "inputRequired": "Please enter",
+  "settingsTitle": "Settings",
+  "reminderSection": "Daily reminder",
+  "reminderToggle": "Enable reminder",
+  "reminderToggleSub": "A random prayer request as push notification every day",
+  "nextReminderAt": "Next reminder: {date}",
+  "@nextReminderAt": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "reminderTime": "Time",
+  "categoriesLabel": "Categories",
+  "addCategoriesFirst": "Create categories first.",
+  "reminderOff": "Reminder turned off",
+  "reminderOn": "Daily reminder active ✓",
+  "notificationsDisabled": "Notifications are disabled on this device",
+  "chooseCategory": "Please select at least one category",
+  "timePickerHelp": "Reminder time",
+  "notificationTitle": "Gebetsglas – time to pray",
+  "languageSection": "Language",
+  "languageSystem": "System",
+  "aboutTitle": "About",
+  "aboutName": "Gebetsglas",
+  "aboutText": "Rebuild of Jona's app – privacy first: All data stays on your device. No account, no server, no tracking.",
+  "cancel": "Cancel"
+}

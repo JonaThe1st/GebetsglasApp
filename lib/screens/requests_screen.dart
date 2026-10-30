@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../db/database.dart';
 import '../models/category.dart';
 import '../models/prayer_request.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/common.dart';
 import 'request_editor_sheet.dart';
 
@@ -39,7 +40,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
     if (request == null) return;
     await AppDatabase.instance.insertRequest(request);
     if (!mounted) return;
-    showSnack(context, 'Anliegen angelegt');
+    showSnack(context, AppLocalizations.of(context)!.requestCreated);
     _load();
   }
 
@@ -57,26 +58,27 @@ class _RequestsScreenState extends State<RequestsScreen> {
   Future<void> _delete(PrayerRequest req) async {
     final ok = await confirmDelete(
       context,
-      title: 'Anliegen löschen',
-      message: '„${req.name}" wird gelöscht.',
+      title: AppLocalizations.of(context)!.deleteRequestTitle,
+      message: AppLocalizations.of(context)!.deleteRequestMsg(req.name),
     );
     if (!ok) return;
     await AppDatabase.instance.deleteRequest(req.id!);
     if (!mounted) return;
-    showSnack(context, 'Anliegen gelöscht');
+    showSnack(context, AppLocalizations.of(context)!.requestDeleted);
     _load();
   }
 
   Future<void> _pray(PrayerRequest req) async {
     await AppDatabase.instance.recordPrayer(req);
     if (!mounted) return;
-    showSnack(context, 'Gebetet – im Tagebuch festgehalten 🙏');
+    showSnack(context, AppLocalizations.of(context)!.prayedRecorded);
     _load();
   }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category.name),
@@ -85,16 +87,15 @@ class _RequestsScreenState extends State<RequestsScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _add,
         icon: const Icon(Icons.add),
-        label: const Text('Anliegen'),
+        label: Text(l10n.addRequest),
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _requests.isEmpty
               ? EmptyState(
                   icon: Icons.favorite_border,
-                  title: 'Noch keine Anliegen',
-                  subtitle:
-                      'Tippe unten auf Hinzufügen, um dein erstes Gebetsanliegen einzutragen.',
+                  title: l10n.requestsEmpty,
+                  subtitle: l10n.requestsEmptySub,
                 )
               : RefreshIndicator(
                   onRefresh: _load,
@@ -125,21 +126,21 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                       if (value == 'edit') _edit(req);
                                       if (value == 'delete') _delete(req);
                                     },
-                                    itemBuilder: (_) => const [
+                                    itemBuilder: (_) => [
                                       PopupMenuItem(
                                           value: 'edit',
                                           child: ListTile(
-                                            leading: Icon(
+                                            leading: const Icon(
                                                 Icons.edit_outlined),
-                                            title: Text('Bearbeiten'),
+                                            title: Text(l10n.edit),
                                             dense: true,
                                           )),
                                       PopupMenuItem(
                                           value: 'delete',
                                           child: ListTile(
                                             leading:
-                                                Icon(Icons.delete_outline),
-                                            title: Text('Löschen'),
+                                                const Icon(Icons.delete_outline),
+                                            title: Text(l10n.delete),
                                             dense: true,
                                           )),
                                     ],
@@ -164,7 +165,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                       size: 15, color: scheme.primary),
                                   const SizedBox(width: 4),
                                   Text(
-                                    '${req.prayedCount}x gebetet',
+                                    l10n.prayedCount(req.prayedCount),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall
@@ -178,7 +179,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                 child: FilledButton.tonalIcon(
                                   onPressed: () => _pray(req),
                                   icon: const Icon(Icons.favorite),
-                                  label: const Text('Gebetet'),
+                                  label: Text(l10n.prayedBtn),
                                 ),
                               ),
                             ],
@@ -192,6 +193,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
   }
 
   void _showDetail(PrayerRequest req) {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -217,10 +219,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
             const SizedBox(height: 14),
             Text(
               req.lastPrayedAt == null
-                  ? 'Noch nie gebetet'
-                  : 'Zuletzt gebetet: '
-                      '${req.lastPrayedAt!.day}.${req.lastPrayedAt!.month}.'
-                      '${req.lastPrayedAt!.year}',
+                  ? l10n.neverPrayed
+                  : l10n.lastPrayedAt('${req.lastPrayedAt!.day}.${req.lastPrayedAt!.month}.${req.lastPrayedAt!.year}'),
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
@@ -235,7 +235,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                   _pray(req);
                 },
                 icon: const Icon(Icons.favorite),
-                label: const Text('Gebetet – ins Tagebuch'),
+                label: Text(l10n.prayedFull),
               ),
             ),
           ],

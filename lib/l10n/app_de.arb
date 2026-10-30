@@ -1,0 +1,123 @@
+{
+  "@@locale": "de",
+  "appTitle": "Gebetsglas",
+  "tabOverview": "Übersicht",
+  "tabCategories": "Kategorien",
+  "tabGlass": "Glas",
+  "tabJournal": "Tagebuch",
+  "tabSettings": "Einstellungen",
+  "homeGreeting": "Dein Gebetsglas",
+  "homeGreetingSub": "Was liegt dir heute auf dem Herzen?",
+  "ctaDraw": "Heute ziehen",
+  "ctaDrawSub": "Zieh ein Gebetsanliegen aus dem Glas",
+  "statRequests": "Anliegen",
+  "statPrayers": "Gebete",
+  "statStreakDays": "Serie (Tage)",
+  "recentTitle": "Zuletzt gebetet",
+  "recentEmpty": "Noch nichts gebetet ✨",
+  "recentEmptySub": "Zieh ein Anliegen und halte es mit dem Tagebuch fest.",
+  "journalTitle": "Gebetstagebuch",
+  "journalEmpty": "Noch kein Tagebuch",
+  "journalEmptySub": "Wenn du ein Anliegen betest, wird es hier mit Datum festgehalten.",
+  "today": "Heute",
+  "yesterday": "Gestern",
+  "drawTitle": "Glas ziehen",
+  "allChips": "Alle",
+  "drawScopeAll": "Gebetsglas – aus allen Kategorien",
+  "drawScopeOne": "Glas: {scope}",
+  "@drawScopeOne": {
+    "placeholders": {
+      "scope": {"type": "String"}
+    }
+  },
+  "drawBtn": "Ziehen",
+  "drawAgain": "Nochmal ziehen",
+  "drawAgainNew": "Neu ziehen",
+  "drawCardTitle": "Dein Anliegen für jetzt",
+  "prayedShort": "Gebetet ✓",
+  "prayedFull": "Gebetet – ins Tagebuch",
+  "drawEmpty": "Keine Anliegen vorhanden – leg zuerst welche an 🙏",
+  "drawRecorded": "Im Tagebuch festgehalten 🙏",
+  "categoriesTitle": "Kategorien",
+  "addCategory": "Kategorie",
+  "categoriesEmpty": "Noch keine Kategorien",
+  "categoriesEmptySub": "Lege Kategorien an, z. B. Familie, Freunde oder Danksagung.",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "deleteCategoryTitle": "Kategorie löschen",
+  "deleteCategoryMsg": "„{name}\" und alle darin enthaltenen Anliegen werden gelöscht.",
+  "@deleteCategoryMsg": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "categoryCreated": "{name} angelegt",
+  "@categoryCreated": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "categoryDeleted": "Kategorie gelöscht",
+  "addRequest": "Anliegen",
+  "requestsEmpty": "Noch keine Anliegen",
+  "requestsEmptySub": "Tippe unten auf Hinzufügen, um dein erstes Gebetsanliegen einzutragen.",
+  "requestCreated": "Anliegen angelegt",
+  "requestDeleted": "Anliegen gelöscht",
+  "prayedRecorded": "Gebetet – im Tagebuch festgehalten 🙏",
+  "prayedCount": "{count}x gebetet",
+  "@prayedCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "prayedBtn": "Gebetet",
+  "neverPrayed": "Noch nie gebetet",
+  "lastPrayedAt": "Zuletzt gebetet: {date}",
+  "@lastPrayedAt": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "deleteRequestTitle": "Anliegen löschen",
+  "deleteRequestMsg": "„{name}\" wird gelöscht.",
+  "@deleteRequestMsg": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "newCategory": "Neue Kategorie",
+  "editCategory": "Kategorie bearbeiten",
+  "labelName": "Name",
+  "nameRequired": "Bitte Name eingeben",
+  "labelDescription": "Beschreibung (optional)",
+  "save": "Speichern",
+  "newRequest": "Neues Gebetsanliegen",
+  "editRequest": "Anliegen bearbeiten",
+  "labelRequest": "Gebetsanliegen",
+  "inputRequired": "Bitte eingeben",
+  "settingsTitle": "Einstellungen",
+  "reminderSection": "Tägliche Erinnerung",
+  "reminderToggle": "Erinnerung aktivieren",
+  "reminderToggleSub": "Täglich ein zufälliges Anliegen als Push-Mitteilung",
+  "nextReminderAt": "Nächste Erinnerung: {date}",
+  "@nextReminderAt": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "reminderTime": "Uhrzeit",
+  "categoriesLabel": "Kategorien",
+  "addCategoriesFirst": "Lege zuerst Kategorien an.",
+  "reminderOff": "Erinnerung ausgeschaltet",
+  "reminderOn": "Tägliche Erinnerung aktiv ✓",
+  "notificationsDisabled": "Benachrichtigungen sind auf dem Gerät deaktiviert",
+  "chooseCategory": "Bitte wähle mindestens eine Kategorie",
+  "timePickerHelp": "Erinnerungszeit",
+  "notificationTitle": "Gebetsglas – Zeit zu beten",
+  "languageSection": "Sprache",
+  "languageSystem": "System",
+  "aboutTitle": "Über",
+  "aboutName": "Gebetsglas",
+  "aboutText": "Neuauflage der App von Jona – datensparsam: Alle Daten bleiben lokal auf deinem Gerät. Kein Konto, kein Server, kein Tracking.",
+  "cancel": "Abbrechen"
+}

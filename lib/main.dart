@@ -4,6 +4,8 @@ import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'db/database.dart';
+import 'l10n/app_localizations.dart';
+import 'l10n/language_controller.dart';
 import 'screens/categories_screen.dart';
 import 'screens/draw_screen.dart';
 import 'screens/home_screen.dart';
@@ -25,6 +27,7 @@ Future<void> main() async {
   }
 
   await NotificationService.instance.init();
+  await LanguageController.load();
 
   // Bestehende Erinnerung nach App-Start neu planen (Inhalte aktualisieren).
   await _rescheduleExistingNotification();
@@ -50,12 +53,18 @@ class GebetsglasApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Gebetsglas',
-      debugShowCheckedModeBanner: false,
-      theme: _buildTheme(Brightness.light),
-      darkTheme: _buildTheme(Brightness.dark),
-      home: const RootScreen(),
+    return ValueListenableBuilder<Locale?>(
+      valueListenable: LanguageController.locale,
+      builder: (context, locale, _) => MaterialApp(
+        title: 'Gebetsglas',
+        debugShowCheckedModeBanner: false,
+        locale: locale,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: _buildTheme(Brightness.light),
+        darkTheme: _buildTheme(Brightness.dark),
+        home: const RootScreen(),
+      ),
     );
   }
 
@@ -103,6 +112,7 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       // Screens beim Tab-Wechsel neu aufbauen, damit Daten aus der DB
       // (Tagebuch, Übersicht) immer aktuell sind.
@@ -110,31 +120,31 @@ class _RootScreenState extends State<RootScreen> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Übersicht',
+            icon: const Icon(Icons.dashboard_outlined),
+            selectedIcon: const Icon(Icons.dashboard),
+            label: l10n.tabOverview,
           ),
           NavigationDestination(
-            icon: Icon(Icons.folder_outlined),
-            selectedIcon: Icon(Icons.folder),
-            label: 'Kategorien',
+            icon: const Icon(Icons.folder_outlined),
+            selectedIcon: const Icon(Icons.folder),
+            label: l10n.tabCategories,
           ),
           NavigationDestination(
-            icon: Icon(Icons.auto_awesome_outlined),
-            selectedIcon: Icon(Icons.auto_awesome),
-            label: 'Glas',
+            icon: const Icon(Icons.auto_awesome_outlined),
+            selectedIcon: const Icon(Icons.auto_awesome),
+            label: l10n.tabGlass,
           ),
           NavigationDestination(
-            icon: Icon(Icons.menu_book_outlined),
-            selectedIcon: Icon(Icons.menu_book),
-            label: 'Tagebuch',
+            icon: const Icon(Icons.menu_book_outlined),
+            selectedIcon: const Icon(Icons.menu_book),
+            label: l10n.tabJournal,
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Einstellungen',
+            icon: const Icon(Icons.settings_outlined),
+            selectedIcon: const Icon(Icons.settings),
+            label: l10n.tabSettings,
           ),
         ],
       ),

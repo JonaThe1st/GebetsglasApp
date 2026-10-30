@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../db/database.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/common.dart';
 import 'draw_screen.dart';
 
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return RefreshIndicator(
       onRefresh: _load,
@@ -50,12 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const SizedBox(height: 8),
           Text(
-            'Dein Gebetsglas',
+            l10n.homeGreeting,
             style: textTheme.headlineMedium
                 ?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -0.5),
           ),
           Text(
-            'Was liegt dir heute auf dem Herzen?',
+            l10n.homeGreetingSub,
             style: textTheme.bodyLarge
                 ?.copyWith(color: scheme.onSurfaceVariant),
           ),
@@ -87,12 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Heute ziehen',
+                      Text(l10n.ctaDraw,
                           style: textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.w700)),
                       const SizedBox(height: 2),
                       Text(
-                        'Zieh ein Gebetsanliegen aus dem Glas',
+                        l10n.ctaDrawSub,
                         style: textTheme.bodySmall
                             ?.copyWith(color: scheme.onSurfaceVariant),
                       ),
@@ -112,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: _StatCard(
                   icon: Icons.folder_outlined,
                   value: _stats['requests'] ?? 0,
-                  label: 'Anliegen',
+                  label: l10n.statRequests,
                 ),
               ),
               const SizedBox(width: 12),
@@ -120,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: _StatCard(
                   icon: Icons.menu_book_outlined,
                   value: _stats['prayers'] ?? 0,
-                  label: 'Gebete',
+                  label: l10n.statPrayers,
                 ),
               ),
               const SizedBox(width: 12),
@@ -128,14 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: _StatCard(
                   icon: Icons.local_fire_department_outlined,
                   value: _streak,
-                  label: 'Serie (Tage)',
+                  label: l10n.statStreakDays,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 24),
 
-          Text('Zuletzt gebetet',
+          Text(l10n.recentTitle,
               style:
                   textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: 10),
@@ -150,13 +152,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Noch nichts gebetet ✨',
+                    l10n.recentEmpty,
                     style: textTheme.titleSmall
                         ?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Zieh ein Anliegen und halte es mit dem Tagebuch fest.',
+                    l10n.recentEmptySub,
                     style: textTheme.bodySmall
                         ?.copyWith(color: scheme.onSurfaceVariant),
                   ),

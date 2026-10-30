@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -114,7 +116,7 @@ Future<bool> confirmDelete(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: const Text('Abbrechen'),
+          child: Text(AppLocalizations.of(ctx)!.cancel),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
@@ -122,7 +124,7 @@ Future<bool> confirmDelete(
             foregroundColor: Theme.of(ctx).colorScheme.onError,
           ),
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text('Löschen'),
+          child: Text(AppLocalizations.of(ctx)!.delete),
         ),
       ],
     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/category.dart';
 
 /// Moderner Bottom-Sheet-Dialog zum Anlegen/Bearbeiten einer Kategorie.
@@ -55,6 +56,7 @@ class _CategoryEditorSheetState extends State<CategoryEditorSheet> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.only(
         left: 24,
@@ -69,7 +71,7 @@ class _CategoryEditorSheetState extends State<CategoryEditorSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.existing == null ? 'Neue Kategorie' : 'Kategorie bearbeiten',
+              widget.existing == null ? l10n.newCategory : l10n.editCategory,
               style: Theme.of(context)
                   .textTheme
                   .titleLarge
@@ -79,21 +81,21 @@ class _CategoryEditorSheetState extends State<CategoryEditorSheet> {
             TextFormField(
               controller: _name,
               autofocus: true,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                prefixIcon: Icon(Icons.folder_outlined),
+              decoration: InputDecoration(
+                labelText: l10n.labelName,
+                prefixIcon: const Icon(Icons.folder_outlined),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
               ),
               validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? 'Bitte Name eingeben' : null,
+                  (v == null || v.trim().isEmpty) ? l10n.nameRequired : null,
             ),
             const SizedBox(height: 14),
             TextFormField(
               controller: _description,
-              decoration: const InputDecoration(
-                labelText: 'Beschreibung (optional)',
+              decoration: InputDecoration(
+                labelText: l10n.labelDescription,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
@@ -106,7 +108,7 @@ class _CategoryEditorSheetState extends State<CategoryEditorSheet> {
               child: FilledButton.icon(
                 onPressed: _save,
                 icon: const Icon(Icons.check),
-                label: const Text('Speichern'),
+                label: Text(l10n.save),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(

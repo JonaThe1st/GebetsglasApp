@@ -60,6 +60,7 @@ class NotificationService {
     required int hour,
     required int minute,
     required List<Category> categories,
+    String? title,
   }) async {
     await cancelDaily();
     if (categories.isEmpty) return;
@@ -108,7 +109,7 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       id: _notificationId,
-      title: 'Gebetsglas – Zeit zu beten',
+      title: title ?? 'Gebetsglas – Zeit zu beten',
       body: lines.join('\n'),
       scheduledDate: next,
       notificationDetails: details,

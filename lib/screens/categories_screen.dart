@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../db/database.dart';
 import '../models/category.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/common.dart';
 import 'category_editor_sheet.dart';
 import 'requests_screen.dart';
@@ -37,7 +38,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     if (category == null) return;
     await AppDatabase.instance.insertCategory(category);
     if (!mounted) return;
-    showSnack(context, '${category.name} angelegt');
+    showSnack(context, AppLocalizations.of(context)!.categoryCreated(category.name));
     _load();
   }
 
@@ -51,38 +52,37 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Future<void> _deleteCategory(CategoryWithCount cat) async {
     final ok = await confirmDelete(
       context,
-      title: 'Kategorie löschen',
-      message:
-          '„${cat.name}" und alle darin enthaltenen Anliegen werden gelöscht.',
+      title: AppLocalizations.of(context)!.deleteCategoryTitle,
+      message: AppLocalizations.of(context)!.deleteCategoryMsg(cat.name),
     );
     if (!ok) return;
     await AppDatabase.instance.deleteCategory(cat.id!);
     if (!mounted) return;
-    showSnack(context, 'Kategorie gelöscht');
+    showSnack(context, AppLocalizations.of(context)!.categoryDeleted);
     _load();
   }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kategorien'),
+        title: Text(l10n.categoriesTitle),
         centerTitle: false,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addCategory,
         icon: const Icon(Icons.add),
-        label: const Text('Kategorie'),
+        label: Text(l10n.addCategory),
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _categories.isEmpty
-              ? const EmptyState(
+              ? EmptyState(
                   icon: Icons.folder_open,
-                  title: 'Noch keine Kategorien',
-                  subtitle:
-                      'Lege Kategorien an, z. B. Familie, Freunde oder Danksagung.',
+                  title: l10n.categoriesEmpty,
+                  subtitle: l10n.categoriesEmptySub,
                 )
               : RefreshIndicator(
                   onRefresh: _load,
@@ -163,20 +163,20 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   if (value == 'edit') _editCategory(cat);
                                   if (value == 'delete') _deleteCategory(cat);
                                 },
-                                itemBuilder: (_) => const [
+                                itemBuilder: (_) => [
                                   PopupMenuItem(
                                       value: 'edit',
                                       child: ListTile(
                                         leading:
-                                            Icon(Icons.edit_outlined),
-                                        title: Text('Bearbeiten'),
+                                            const Icon(Icons.edit_outlined),
+                                        title: Text(l10n.edit),
                                         dense: true,
                                       )),
                                   PopupMenuItem(
                                       value: 'delete',
                                       child: ListTile(
-                                        leading: Icon(Icons.delete_outline),
-                                        title: Text('Löschen'),
+                                        leading: const Icon(Icons.delete_outline),
+                                        title: Text(l10n.delete),
                                         dense: true,
                                       )),
                                 ],

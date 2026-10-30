@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../db/database.dart';
 import '../models/category.dart';
 import '../services/notification_service.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/language_controller.dart';
 import '../services/settings_service.dart';
 import '../widgets/common.dart';
 
@@ -24,6 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int _minute = 0;
   bool _loading = true;
   DateTime? _nextFire;
+  String _language = 'system';
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final minute = await _settings.minute;
     final selected = await _settings.categoryIds;
     final cats = await AppDatabase.instance.getCategories();
+    final language = await _settings.language;
     final nextFireRaw = await _settings.nextFire;
     final nextFire = (nextFireRaw == null)
         ? null
@@ -52,11 +56,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _nextFire = (nextFire != null && nextFire.isAfter(DateTime.now()))
           ? nextFire
           : null;
+      _language = language;
       _loading = false;
     });
   }
 
   Future<void> _saveAndSchedule() async {
+    final l10n = AppLocalizations.of(context)!;
     await _settings.setEnabled(_enabled);
     await _settings.setTime(_hour, _minute);
     await _settings.setCategoryIds(_selectedCategoryIds);
@@ -64,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!_enabled) {
       await NotificationService.instance.cancelDaily();
       if (!mounted) return;
-      showSnack(context, 'Erinnerung ausgeschaltet');
+      showSnack(context, l10n.reminderOff);
       return;
     }
     final granted = await NotificationService.instance.requestPermission();
@@ -72,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() => _enabled = false);
       await _settings.setEnabled(false);
       if (!mounted) return;
-      showSnack(context, 'Benachrichtigungen sind auf dem Gerät deaktiviert');
+      showSnack(context, l10n.notificationsDisabled);
       return;
     }
     final selectedCats = _categories
@@ -80,20 +86,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
         .toList();
     if (selectedCats.isEmpty) {
       if (!mounted) return;
-      showSnack(context, 'Bitte wähle mindestens eine Kategorie');
+      showSnack(context, l10n.chooseCategory);
       return;
     }
-    await NotificationService.instance
-        .scheduleDaily(hour: _hour, minute: _minute, categories: selectedCats);
+    await NotificationService.instance.scheduleDaily(
+        hour: _hour,
+        minute: _minute,
+        categories: selectedCats,
+        title: l10n.notificationTitle);
     if (!mounted) return;
-    showSnack(context, 'Tägliche Erinnerung aktiv ✓');
+    showSnack(context, l10n.reminderOn);
   }
 
   Future<void> _pickTime() async {
     final picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: _hour, minute: _minute),
-      helpText: 'Erinnerungszeit',
+      helpText: AppLocalizations.of(context)!.timePickerHelp,
     );
     if (picked == null) return;
     setState(() {
@@ -106,17 +115,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final time = TimeOfDay(hour: _hour, minute: _minute);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Einstellungen'), centerTitle: false),
+      appBar: AppBar(title: Text(l10n.settingsTitle), centerTitle: false),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               padding: const EdgeInsets.all(20),
               children: [
                 // ─── Tägliche Erinnerung ───
-                Text('Tägliche Erinnerung',
+                Text(l10n.reminderSection,
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -127,10 +137,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
-                        title: const Text('Erinnerung aktivieren',
-                            style: TextStyle(fontWeight: FontWeight.w600)),
-                        subtitle: const Text(
-                            'Täglich ein zufälliges Anliegen als Push-Mitteilung'),
+                        title: Text(l10n.reminderToggle,
+                            style: const TextStyle(fontWeight: FontWeight.w600)),
+                        subtitle: Text(l10n.reminderToggleSub),
                         value: _enabled,
                         onChanged: (value) {
                           setState(() => _enabled = value);
@@ -143,7 +152,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Nächste Erinnerung: ${DateFormat('EEEE, dd.MM., HH:mm').format(_nextFire!)}',
+                              l10n.nextReminderAt(DateFormat('EEEE, dd.MM., HH:mm').format(_nextFire!)),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -157,7 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ListTile(
                         contentPadding: EdgeInsets.zero,
                         leading: const Icon(Icons.schedule),
-                        title: const Text('Uhrzeit'),
+                        title: Text(l10n.reminderTime),
                         subtitle: Text(DateFormat('HH:mm').format(
                             DateTime(2026, 1, 1, time.hour, time.minute))),
                         trailing: const Icon(Icons.chevron_right),
@@ -168,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Kategorien',
+                          child: Text(l10n.categoriesLabel,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall
@@ -202,7 +211,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                            'Lege zuerst Kategorien an.',
+                            l10n.addCategoriesFirst,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -214,8 +223,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const SizedBox(height: 24),
 
+                // ─── Sprache ───
+                Text(l10n.languageSection,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 10),
+                GlassCard(
+                  child: SegmentedButton<String>(
+                    segments: [
+                      ButtonSegment(
+                        value: 'system',
+                        label: Text(l10n.languageSystem),
+                        icon: const Icon(Icons.settings_suggest_outlined),
+                      ),
+                      const ButtonSegment(
+                        value: 'de',
+                        label: Text('Deutsch'),
+                        icon: Icon(Icons.language),
+                      ),
+                      const ButtonSegment(
+                        value: 'en',
+                        label: Text('English'),
+                        icon: Icon(Icons.language),
+                      ),
+                    ],
+                    selected: {_language},
+                    onSelectionChanged: (selection) async {
+                      final code = selection.first;
+                      setState(() => _language = code);
+                      await LanguageController.setLanguage(code);
+                    },
+                  ),
+                ),
+                const SizedBox(height: 24),
+
                 // ─── Über ───
-                Text('Über',
+                Text(l10n.aboutTitle,
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -225,14 +270,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Gebetsglas',
-                          style: TextStyle(
+                      Text(l10n.aboutName,
+                          style: const TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 16)),
                       const SizedBox(height: 6),
                       Text(
-                        'Neuauflage der App von Jona – datensparsam: '
-                        'Alle Daten bleiben lokal auf deinem Gerät. '
-                        'Kein Konto, kein Server, kein Tracking.',
+                        l10n.aboutText,
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall

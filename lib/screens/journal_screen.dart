@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../db/database.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/common.dart';
 
 class JournalScreen extends StatefulWidget {
@@ -33,6 +34,8 @@ class _JournalScreenState extends State<JournalScreen> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
     final entriesByDay = <String, List<Map<String, Object?>>>{};
     for (final e in _entries) {
       final day = DateFormat('yyyy-MM-dd')
@@ -41,15 +44,14 @@ class _JournalScreenState extends State<JournalScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Gebetstagebuch'), centerTitle: false),
+      appBar: AppBar(title: Text(l10n.journalTitle), centerTitle: false),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _entries.isEmpty
-              ? const EmptyState(
+              ? EmptyState(
                   icon: Icons.menu_book_outlined,
-                  title: 'Noch kein Tagebuch',
-                  subtitle:
-                      'Wenn du ein Anliegen betest, wird es hier mit Datum festgehalten.',
+                  title: l10n.journalEmpty,
+                  subtitle: l10n.journalEmptySub,
                 )
               : RefreshIndicator(
                   onRefresh: _load,
@@ -58,7 +60,7 @@ class _JournalScreenState extends State<JournalScreen> {
                     children: [
                       ...entriesByDay.entries.map((group) {
                         final day = DateTime.parse(group.key);
-                        final label = _dayLabel(day);
+                        final label = _dayLabel(day, l10n, locale);
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -133,11 +135,11 @@ class _JournalScreenState extends State<JournalScreen> {
     );
   }
 
-  String _dayLabel(DateTime day) {
+  String _dayLabel(DateTime day, AppLocalizations l10n, String locale) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    if (day == today) return 'Heute';
-    if (day == today.subtract(const Duration(days: 1))) return 'Gestern';
-    return DateFormat('EEEE, d. MMMM yyyy', 'de_DE').format(day);
+    if (day == today) return l10n.today;
+    if (day == today.subtract(const Duration(days: 1))) return l10n.yesterday;
+    return DateFormat('EEEE, d. MMMM yyyy', locale).format(day);
   }
 }

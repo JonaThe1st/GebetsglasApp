@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/prayer_request.dart';
 
 /// Bottom-Sheet zum Anlegen/Bearbeiten eines Gebetsanliegens.
@@ -64,6 +65,7 @@ class _RequestEditorSheetState extends State<RequestEditorSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.only(
         left: 24,
@@ -79,8 +81,8 @@ class _RequestEditorSheetState extends State<RequestEditorSheet> {
           children: [
             Text(
               widget.existing == null
-                  ? 'Neues Gebetsanliegen'
-                  : 'Anliegen bearbeiten',
+                  ? l10n.newRequest
+                  : l10n.editRequest,
               style: Theme.of(context)
                   .textTheme
                   .titleLarge
@@ -90,21 +92,21 @@ class _RequestEditorSheetState extends State<RequestEditorSheet> {
             TextFormField(
               controller: _name,
               autofocus: true,
-              decoration: const InputDecoration(
-                labelText: 'Gebetsanliegen',
-                prefixIcon: Icon(Icons.favorite_outline),
+              decoration: InputDecoration(
+                labelText: l10n.labelRequest,
+                prefixIcon: const Icon(Icons.favorite_outline),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
               ),
               validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? 'Bitte eingeben' : null,
+                  (v == null || v.trim().isEmpty) ? l10n.inputRequired : null,
             ),
             const SizedBox(height: 14),
             TextFormField(
               controller: _description,
-              decoration: const InputDecoration(
-                labelText: 'Beschreibung (optional)',
+              decoration: InputDecoration(
+                labelText: l10n.labelDescription,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
@@ -117,7 +119,7 @@ class _RequestEditorSheetState extends State<RequestEditorSheet> {
               child: FilledButton.icon(
                 onPressed: _save,
                 icon: const Icon(Icons.check),
-                label: const Text('Speichern'),
+                label: Text(l10n.save),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
