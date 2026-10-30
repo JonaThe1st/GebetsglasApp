@@ -56,14 +56,15 @@ class NotificationService {
   /// Plant die tägliche Benachrichtigung.
   /// Für jede ausgewählte Kategorie wird beim Planen ein zufälliges
   /// Anliegen ausgewählt; die Erinnerung öffnet beim Tippen die App.
-  Future<void> scheduleDaily({
+  /// Liefert `false`, wenn das Planen fehlschlägt.
+  Future<bool> scheduleDaily({
     required int hour,
     required int minute,
     required List<Category> categories,
     String? title,
   }) async {
     await cancelDaily();
-    if (categories.isEmpty) return;
+    if (categories.isEmpty) return true;
 
     final db = AppDatabase.instance;
     final now = DateTime.now();
@@ -107,16 +108,66 @@ class NotificationService {
             AndroidFlutterLocalNotificationsPlugin>();
     final canExact = await androidImpl?.canScheduleExactNotifications() ?? false;
 
-    await _plugin.zonedSchedule(
-      id: _notificationId,
-      title: title ?? 'Gebetsglas – Zeit zu beten',
-      body: lines.join('\n'),
-      scheduledDate: next,
+    try {
+      await _plugin.zonedSchedule(
+        id: _notificationId,
+        title: title ?? 'Gebetsglas – Zeit zu beten',
+        body: lines.join('\n'),
+        scheduledDate: next,
+        notificationDetails: details,
+        androidScheduleMode: canExact
+            ? AndroidScheduleMode.exactAllowWhileIdle
+            : AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } catch (_) {
+      // Fallback: inexakt (kommt ohne Sonderberechtigung aus).
+      try {
+        await _plugin.zonedSchedule(
+          id: _notificationId,
+          title: title ?? 'Gebetsglas – Zeit zu beten',
+          body: lines.join('\n'),
+          scheduledDate: next,
+          notificationDetails: details,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          matchDateTimeComponents: DateTimeComponents.time,
+        );
+      } catch (_) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /// Fragt die Berechtigung für exakte Alarme an (Android 12+).
+  /// Öffnet bei Bedarf die Systemeinstellung „Alarme & Erinnerungen“.
+  Future<bool> requestExactAlarmPermission() async {
+    final androidImpl =
+        _plugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    if (androidImpl == null) return true;
+    if (await androidImpl.canScheduleExactNotifications()) return true;
+    await androidImpl.requestExactAlarmsPermission();
+    return await androidImpl.canScheduleExactNotifications();
+  }
+
+  /// Sofortige Test-Benachrichtigung (prüft Berechtigung + Kanal).
+  Future<void> sendTestNotification() async {
+    final details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        channelId,
+        'Gebetsglas Erinnerungen',
+        channelDescription: 'Tägliche Erinnerung an deine Gebetsanliegen',
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
+    await _plugin.show(
+      id: 4242,
+      title: 'Gebetsglas – Test 🙏',
+      body: 'Benachrichtigungen funktionieren.',
       notificationDetails: details,
-      androidScheduleMode: canExact
-          ? AndroidScheduleMode.exactAllowWhileIdle
-          : AndroidScheduleMode.inexactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 

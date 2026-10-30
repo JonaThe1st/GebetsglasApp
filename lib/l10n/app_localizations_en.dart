@@ -283,4 +283,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get testNotification => 'Send test notification';
+
+  @override
+  String get testNotificationSub =>
+      'Check that push notifications arrive on this device';
+
+  @override
+  String get testNotificationSent => 'Test notification sent ✓';
+
+  @override
+  String get scheduleFailed =>
+      'Reminder could not be scheduled – please try again';
 }

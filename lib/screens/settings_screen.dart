@@ -70,6 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!_enabled) {
       await NotificationService.instance.cancelDaily();
       if (!mounted) return;
+      setState(() => _nextFire = null);
       showSnack(context, l10n.reminderOff);
       return;
     }
@@ -89,13 +90,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
       showSnack(context, l10n.chooseCategory);
       return;
     }
-    await NotificationService.instance.scheduleDaily(
+    // Exakte Alarme (unter Android 12+) machen die Zustellung auch im
+    // Energiesparmodus zuverlässig – Berechtigung einmalig anfragen.
+    await NotificationService.instance.requestExactAlarmPermission();
+
+    final ok = await NotificationService.instance.scheduleDaily(
         hour: _hour,
         minute: _minute,
         categories: selectedCats,
         title: l10n.notificationTitle);
+    await _refreshNextFire();
     if (!mounted) return;
-    showSnack(context, l10n.reminderOn);
+    showSnack(context, ok ? l10n.reminderOn : l10n.scheduleFailed);
+  }
+
+  Future<void> _refreshNextFire() async {
+    final raw = await _settings.nextFire;
+    if (!mounted) return;
+    setState(() {
+      final nf = raw == null ? null : DateTime.fromMillisecondsSinceEpoch(raw);
+      _nextFire = (nf != null && nf.isAfter(DateTime.now())) ? nf : null;
+    });
   }
 
   Future<void> _pickTime() async {
@@ -171,6 +186,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             DateTime(2026, 1, 1, time.hour, time.minute))),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: _pickTime,
+                      ),
+                      const Divider(),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.notifications_active_outlined),
+                        title: Text(l10n.testNotification),
+                        subtitle: Text(l10n.testNotificationSub),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () async {
+                          final granted =
+                              await NotificationService.instance
+                                  .requestPermission();
+                          if (!granted) {
+                            if (!mounted) return;
+                            showSnack(context, l10n.notificationsDisabled);
+                            return;
+                          }
+                          await NotificationService.instance
+                              .sendTestNotification();
+                          if (!mounted) return;
+                          showSnack(context, l10n.testNotificationSent);
+                        },
                       ),
                       const Divider(),
                       Padding(

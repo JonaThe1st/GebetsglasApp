@@ -284,4 +284,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get cancel => 'Abbrechen';
+
+  @override
+  String get testNotification => 'Test-Benachrichtigung senden';
+
+  @override
+  String get testNotificationSub =>
+      'Prüft, ob Push-Mitteilungen auf diesem Gerät ankommen';
+
+  @override
+  String get testNotificationSent => 'Test-Benachrichtigung gesendet ✓';
+
+  @override
+  String get scheduleFailed =>
+      'Erinnerung konnte nicht geplant werden – bitte erneut versuchen';
 }

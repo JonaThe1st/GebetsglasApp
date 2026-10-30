@@ -607,6 +607,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @testNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test notification'**
+  String get testNotification;
+
+  /// No description provided for @testNotificationSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that push notifications arrive on this device'**
+  String get testNotificationSub;
+
+  /// No description provided for @testNotificationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Test notification sent ✓'**
+  String get testNotificationSent;
+
+  /// No description provided for @scheduleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder could not be scheduled – please try again'**
+  String get scheduleFailed;
 }
 
 class _AppLocalizationsDelegate
