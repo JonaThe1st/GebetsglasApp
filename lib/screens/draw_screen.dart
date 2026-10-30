@@ -146,10 +146,11 @@ class _DrawScreenState extends State<DrawScreen> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-                    child: Icon(
-                      _drawing ? Icons.hourglass_top : Icons.gesture,
-                      size: 62,
-                      color: scheme.onPrimaryContainer,
+                    child: Image.asset(
+                      'assets/icons/jar.png',
+                      width: 76,
+                      height: 76,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

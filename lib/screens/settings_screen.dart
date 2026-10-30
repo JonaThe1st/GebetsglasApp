@@ -23,6 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int _hour = 7;
   int _minute = 0;
   bool _loading = true;
+  DateTime? _nextFire;
 
   @override
   void initState() {
@@ -36,6 +37,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final minute = await _settings.minute;
     final selected = await _settings.categoryIds;
     final cats = await AppDatabase.instance.getCategories();
+    final nextFireRaw = await _settings.nextFire;
+    final nextFire = (nextFireRaw == null)
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(nextFireRaw);
 
     if (!mounted) return;
     setState(() {
@@ -44,6 +49,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _minute = minute;
       _selectedCategoryIds = selected;
       _categories = cats;
+      _nextFire = (nextFire != null && nextFire.isAfter(DateTime.now()))
+          ? nextFire
+          : null;
       _loading = false;
     });
   }
@@ -129,6 +137,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           _saveAndSchedule();
                         },
                       ),
+                      if (_nextFire != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Nächste Erinnerung: ${DateFormat('EEEE, dd.MM., HH:mm').format(_nextFire!)}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                      color: scheme.primary,
+                                      fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
                       const Divider(),
                       ListTile(
                         contentPadding: EdgeInsets.zero,

@@ -3,6 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../db/database.dart';
 import '../models/category.dart';
+import 'settings_service.dart';
 
 /// Lokale tägliche Erinnerung (Push, kein Backend).
 class NotificationService {
@@ -67,9 +68,16 @@ class NotificationService {
     final now = DateTime.now();
     var next = tz.TZDateTime(
         tz.local, now.year, now.month, now.day, hour, minute);
-    if (!next.isAfter(tz.TZDateTime.now(tz.local))) {
+    final nowTz = tz.TZDateTime.now(tz.local);
+    // Wurde genau um die gewählte Uhrzeit aktiviert (Zeitpunkt liegt in der
+    // Vergangenheit oder weniger als 90 s in der Zukunft), startet die
+    // Erinnerung am nächsten Tag. Sonst kann der Alarm nie (oder zu knapp)
+    // ausgelöst werden.
+    if (!next.isAfter(nowTz) ||
+        next.difference(nowTz) < const Duration(seconds: 90)) {
       next = next.add(const Duration(days: 1));
     }
+    await SettingsService.instance.setNextFire(next.millisecondsSinceEpoch);
 
     final lines = <String>[];
     for (var i = 0; i < categories.length; i++) {
@@ -91,13 +99,22 @@ class NotificationService {
       iOS: DarwinNotificationDetails(),
     );
 
+    // Exakter Alarm wo erlaubt (zuverlässiger, auch im Doze-Modus),
+    // sonst inexakt (batteriefreundlich, minimale Verzögerung möglich).
+    final androidImpl =
+        _plugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    final canExact = await androidImpl?.canScheduleExactNotifications() ?? false;
+
     await _plugin.zonedSchedule(
       id: _notificationId,
       title: 'Gebetsglas – Zeit zu beten',
       body: lines.join('\n'),
       scheduledDate: next,
       notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: canExact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }

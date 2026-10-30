@@ -11,6 +11,17 @@ class SettingsService {
   static const _kHour = 'notification_hour';
   static const _kMinute = 'notification_minute';
   static const _kCategoryIds = 'notification_category_ids';
+  static const _kNextFire = 'notification_next_fire';
+
+  Future<int?> get nextFire async {
+    final raw =
+        (await SharedPreferences.getInstance()).getInt(_kNextFire);
+    return raw;
+  }
+
+  Future<void> setNextFire(int epochMillis) async {
+    (await SharedPreferences.getInstance()).setInt(_kNextFire, epochMillis);
+  }
 
   Future<bool> get enabled async =>
       (await SharedPreferences.getInstance()).getBool(_kEnabled) ?? false;
