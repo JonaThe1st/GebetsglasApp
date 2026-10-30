@@ -2,6 +2,11 @@
     <!-- Benachrichtigungen (tägliche Erinnerung) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Alarm-Planung für die tägliche Erinnerung:
+         USE_EXACT_ALARM wird vom System automatisch erteilt und braucht KEINE
+         Nutzer-Einwilligung (im Gegensatz zu SCHEDULE_EXACT_ALARM). Damit
+         kommt die Erinnerung auch im Energiesparmodus pünktlich zu. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <application
         android:label="Gebetsglas"

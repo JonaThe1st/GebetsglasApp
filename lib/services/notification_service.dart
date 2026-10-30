@@ -101,13 +101,9 @@ class NotificationService {
       iOS: DarwinNotificationDetails(),
     );
 
-    // Exakter Alarm wo erlaubt (zuverlässiger, auch im Doze-Modus),
-    // sonst inexakt (batteriefreundlich, minimale Verzögerung möglich).
-    final androidImpl =
-        _plugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-    final canExact = await androidImpl?.canScheduleExactNotifications() ?? false;
-
+    // Exakter Alarm: USE_EXACT_ALARM ist automatisch erteilt, damit kommt
+    // die Erinnerung auch im Energiesparmodus pünktlich. Nur wenn das fehlschlägt
+    // (z.B. Gerät verweigert trotzdem), Fallback auf inexakt.
     try {
       await _plugin.zonedSchedule(
         id: _notificationId,
@@ -115,13 +111,10 @@ class NotificationService {
         body: lines.join('\n'),
         scheduledDate: next,
         notificationDetails: details,
-        androidScheduleMode: canExact
-            ? AndroidScheduleMode.exactAllowWhileIdle
-            : AndroidScheduleMode.inexactAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
       );
     } catch (_) {
-      // Fallback: inexakt (kommt ohne Sonderberechtigung aus).
       try {
         await _plugin.zonedSchedule(
           id: _notificationId,
