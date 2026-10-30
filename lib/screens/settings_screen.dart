@@ -199,13 +199,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               await NotificationService.instance
                                   .requestPermission();
                           if (!granted) {
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             showSnack(context, l10n.notificationsDisabled);
                             return;
                           }
                           await NotificationService.instance
                               .sendTestNotification();
-                          if (!mounted) return;
+                          if (!context.mounted) return;
                           showSnack(context, l10n.testNotificationSent);
                         },
                       ),

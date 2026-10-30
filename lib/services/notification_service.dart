@@ -146,9 +146,9 @@ class NotificationService {
         _plugin.resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
     if (androidImpl == null) return true;
-    if (await androidImpl.canScheduleExactNotifications()) return true;
+    if (await androidImpl.canScheduleExactNotifications() ?? false) return true;
     await androidImpl.requestExactAlarmsPermission();
-    return await androidImpl.canScheduleExactNotifications();
+    return await androidImpl.canScheduleExactNotifications() ?? false;
   }
 
   /// Sofortige Test-Benachrichtigung (prüft Berechtigung + Kanal).
