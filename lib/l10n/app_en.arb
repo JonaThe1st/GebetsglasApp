@@ -137,5 +137,14 @@
   "testNotification": "Send test notification",
   "testNotificationSub": "Check that push notifications arrive on this device",
   "testNotificationSent": "Test notification sent ✓",
-  "scheduleFailed": "Reminder could not be scheduled – please try again"
+  "scheduleFailed": "Reminder could not be scheduled – please try again",
+  "diagTitle": "Diagnostics",
+  "diagNotifications": "Notifications allowed",
+  "diagExactAlarms": "On-time delivery (exact alarms)",
+  "diagExactHint": "Tap to enable, then allow “Alarms & reminders” in the system settings",
+  "diagScheduled": "Planned",
+  "diagScheduledNone": "No reminder scheduled",
+  "diagRefresh": "Refresh",
+  "diagYes": "yes",
+  "diagNo": "no"
 }

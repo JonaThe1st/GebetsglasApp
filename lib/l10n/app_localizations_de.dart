@@ -298,4 +298,32 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get scheduleFailed =>
       'Erinnerung konnte nicht geplant werden – bitte erneut versuchen';
+
+  @override
+  String get diagTitle => 'Diagnose';
+
+  @override
+  String get diagNotifications => 'Benachrichtigungen erlaubt';
+
+  @override
+  String get diagExactAlarms => 'Pünktliche Zustellung (Exakte Alarme)';
+
+  @override
+  String get diagExactHint =>
+      'Zum Aktivieren tippen, dann im System „Alarme & Erinnerungen“ erlauben';
+
+  @override
+  String get diagScheduled => 'Geplant';
+
+  @override
+  String get diagScheduledNone => 'Keine Erinnerung geplant';
+
+  @override
+  String get diagRefresh => 'Aktualisieren';
+
+  @override
+  String get diagYes => 'ja';
+
+  @override
+  String get diagNo => 'nein';
 }

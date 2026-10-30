@@ -631,6 +631,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reminder could not be scheduled – please try again'**
   String get scheduleFailed;
+
+  /// No description provided for @diagTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnostics'**
+  String get diagTitle;
+
+  /// No description provided for @diagNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications allowed'**
+  String get diagNotifications;
+
+  /// No description provided for @diagExactAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'On-time delivery (exact alarms)'**
+  String get diagExactAlarms;
+
+  /// No description provided for @diagExactHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to enable, then allow “Alarms & reminders” in the system settings'**
+  String get diagExactHint;
+
+  /// No description provided for @diagScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get diagScheduled;
+
+  /// No description provided for @diagScheduledNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder scheduled'**
+  String get diagScheduledNone;
+
+  /// No description provided for @diagRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get diagRefresh;
+
+  /// No description provided for @diagYes.
+  ///
+  /// In en, this message translates to:
+  /// **'yes'**
+  String get diagYes;
+
+  /// No description provided for @diagNo.
+  ///
+  /// In en, this message translates to:
+  /// **'no'**
+  String get diagNo;
 }
 
 class _AppLocalizationsDelegate

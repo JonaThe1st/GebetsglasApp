@@ -27,6 +27,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _loading = true;
   DateTime? _nextFire;
   String _language = 'system';
+  bool? _notifGranted;
+  bool? _exactOk;
+  String _pendingText = '';
 
   @override
   void initState() {
@@ -58,6 +61,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
           : null;
       _language = language;
       _loading = false;
+    });
+    _refreshDiagnostics();
+  }
+
+  /// Diagnose-Infos laden: exakte Alarme, geplante Erinnerungen,
+  /// optional auch die Benachrichtigungs-Berechtigung prüfen (einmaliger
+  /// System-Dialog beim ersten Mal).
+  Future<void> _refreshDiagnostics({bool checkNotif = false}) async {
+    final exact = await NotificationService.instance.canScheduleExact();
+    final pending = await NotificationService.instance.pendingRequests();
+    bool? notif;
+    if (checkNotif) {
+      notif = await NotificationService.instance.requestPermission();
+    }
+    if (!mounted) return;
+    final next = pending.where((p) => p.id == 1001).toList();
+    final l10n = AppLocalizations.of(context)!;
+    final text = next.isEmpty
+        ? l10n.diagScheduledNone
+        : DateFormat('EEEE, dd.MM., HH:mm').format(
+            (next.first.scheduledDateTime)?.toLocal() ?? DateTime.now());
+    setState(() {
+      _exactOk = exact;
+      _pendingText = text;
+      if (notif != null) _notifGranted = notif;
     });
   }
 
@@ -255,6 +283,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ?.copyWith(color: scheme.onSurfaceVariant),
                           ),
                         ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // ─── Diagnose ───
+                Text(l10n.diagTitle,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 10),
+                GlassCard(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.notifications_outlined),
+                        title: Text(l10n.diagNotifications),
+                        onTap: () => _refreshDiagnostics(checkNotif: true),
+                        trailing: _notifGranted == null
+                            ? const Icon(Icons.help_outline)
+                            : Icon(
+                                _notifGranted!
+                                    ? Icons.check_circle
+                                    : Icons.cancel,
+                                color: _notifGranted!
+                                    ? Colors.green
+                                    : scheme.error),
+                      ),
+                      const Divider(),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.alarm),
+                        title: Text(l10n.diagExactAlarms),
+                        subtitle: Text(l10n.diagExactHint),
+                        trailing: _exactOk == null
+                            ? const Icon(Icons.help_outline)
+                            : Icon(
+                                _exactOk! ? Icons.check_circle : Icons.cancel,
+                                color: _exactOk! ? Colors.green : scheme.error),
+                        onTap: () async {
+                          await NotificationService.instance
+                              .requestExactAlarmPermission();
+                          if (!mounted) return;
+                          await _refreshDiagnostics();
+                        },
+                      ),
+                      const Divider(),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.schedule),
+                        title: Text(l10n.diagScheduled),
+                        subtitle: Text(_pendingText),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.refresh),
+                          tooltip: l10n.diagRefresh,
+                          onPressed: () =>
+                              _refreshDiagnostics(checkNotif: true),
+                        ),
+                      ),
                     ],
                   ),
                 ),

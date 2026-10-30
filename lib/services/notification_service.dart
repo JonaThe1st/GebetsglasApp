@@ -144,6 +144,18 @@ class NotificationService {
     return await androidImpl.canScheduleExactNotifications() ?? false;
   }
 
+  /// Prüft, ob exakte Alarme aktuell erlaubt sind (Android 12+ Spezialrechte).
+  Future<bool> canScheduleExact() async {
+    final androidImpl =
+        _plugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    return await androidImpl?.canScheduleExactNotifications() ?? false;
+  }
+
+  /// Listet die aktuell geplanten Erinnerungen (Diagnose).
+  Future<List<PendingNotificationRequest>> pendingRequests() =>
+      _plugin.pendingNotificationRequests();
+
   /// Sofortige Test-Benachrichtigung (prüft Berechtigung + Kanal).
   Future<void> sendTestNotification() async {
     final details = NotificationDetails(

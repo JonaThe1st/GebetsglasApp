@@ -297,4 +297,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get scheduleFailed =>
       'Reminder could not be scheduled – please try again';
+
+  @override
+  String get diagTitle => 'Diagnostics';
+
+  @override
+  String get diagNotifications => 'Notifications allowed';
+
+  @override
+  String get diagExactAlarms => 'On-time delivery (exact alarms)';
+
+  @override
+  String get diagExactHint =>
+      'Tap to enable, then allow “Alarms & reminders” in the system settings';
+
+  @override
+  String get diagScheduled => 'Planned';
+
+  @override
+  String get diagScheduledNone => 'No reminder scheduled';
+
+  @override
+  String get diagRefresh => 'Refresh';
+
+  @override
+  String get diagYes => 'yes';
+
+  @override
+  String get diagNo => 'no';
 }

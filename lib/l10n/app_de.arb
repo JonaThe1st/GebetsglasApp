@@ -137,5 +137,14 @@
   "testNotification": "Test-Benachrichtigung senden",
   "testNotificationSub": "Prüft, ob Push-Mitteilungen auf diesem Gerät ankommen",
   "testNotificationSent": "Test-Benachrichtigung gesendet ✓",
-  "scheduleFailed": "Erinnerung konnte nicht geplant werden – bitte erneut versuchen"
+  "scheduleFailed": "Erinnerung konnte nicht geplant werden – bitte erneut versuchen",
+  "diagTitle": "Diagnose",
+  "diagNotifications": "Benachrichtigungen erlaubt",
+  "diagExactAlarms": "Pünktliche Zustellung (Exakte Alarme)",
+  "diagExactHint": "Zum Aktivieren tippen, dann im System „Alarme & Erinnerungen“ erlauben",
+  "diagScheduled": "Geplant",
+  "diagScheduledNone": "Keine Erinnerung geplant",
+  "diagRefresh": "Aktualisieren",
+  "diagYes": "ja",
+  "diagNo": "nein"
 }
